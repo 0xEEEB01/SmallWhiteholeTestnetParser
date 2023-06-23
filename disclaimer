@@ -1,0 +1,14 @@
+Take note that the script can't identify if the user
+1) has supplied excessive amount of ETH...
+2) ...made big profits by grabbing a ton of USDT -> GRV...
+3) ...and then several days later repaid and withdrawn the ETH. The sum would still be 0.
+
+I will see if I can improve the script, but cases like this can still be clearly seen on arbiscan
+
+As a reference: good example of LEGIT zero-sum user:
+
+https://goerli.arbiscan.io/token/0xd3e7076dd4513cf21bdee610cc5b144026631518?a=0x510c5966ecb872b83e2a7c2d92081648eb15f680
+
+This address is not on the potential cheaters output list.
+
+And be aware that Whitehole Finance is a slow rug pull ehehehehe
