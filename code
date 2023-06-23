@@ -1,0 +1,37 @@
+# code is in Python 3
+
+import csv
+
+path = 'c:\\temp\\'
+
+ethlent = .0
+
+file = open(path + "data.CSV", "r")  # open csv file containing all gETH (token you get for lending ETH) transactions
+reader = csv.reader(file)
+dict = {}  # create a dictionary to which we will write the addresses and their ETH lent
+address = ""
+for line in reader:  # for each line (transaction) I am doing the following:
+    sender = line[4]  # check the sender
+    receiver = line[5]  # check the receiver
+    try:
+        ethlent = float(line[6])  # check the quantity of ETH lent OR withdrawn
+    except:  # sh!tcode to avoid error when it tries to convert the first line (header) into a float
+        continue
+    if sender == "0x0000000000000000000000000000000000000000":  # if the sender is zero address then it's lending ETH
+        address = receiver  # user address is the receiver of gETH
+        #  in this transaction the user lent ETH
+
+    else:  # if the sender is NOT zero address then it's withdrawing ETH
+        address = sender  # user address is the sender of gETH
+        ethlent = ethlent * -1  # in this transaction the user withdraws ETH, so the lent value is inverted
+    if address in dict.keys():  # if an address is in the dictionary already
+        dict[address] += ethlent  # sum up their ETH lent (or withdrawn)
+    else:  # if an address is not in the dictionary yet
+        dict[address] = ethlent  # just start tracking ETH lent (or withdrawn)
+
+with open('potential_cheaters.csv', 'w', newline='') as csv_file:  # let's write the dictionary to the csv file
+    writer = csv.writer(csv_file)
+    writer.writerow(["address", "currently lent ETH"])
+    for key, value in dict.items():  # for each address on the list
+        if value > 1:  # if lent ETH - withdrawn ETH > 1
+            writer.writerow([key, value])  # the user address is written into the csv file
